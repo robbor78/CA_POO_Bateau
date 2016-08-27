@@ -1,6 +1,6 @@
 CC = clang
 
-CFLAGS = -x c++ -c -std=c++11 -pedantic -Wall
+CFLAGS = -x c++ -c -std=c++11 -pedantic -Wall -g
 LFLAGS = -lstdc++ -lm
 
 SOURCES = bateau.cc

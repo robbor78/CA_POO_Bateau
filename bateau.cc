@@ -69,10 +69,12 @@ public:
 
     double d = distance(autre);
 
-    if (d >= rayon_rencontre) { return; }
+    if (d > rayon_rencontre) { return; }
 
     attaque(autre);
-    autre.replique(*this);
+    if (autre.etat_ != Etat::Coule) {
+      autre.replique(*this);
+    }
 
   }
 
@@ -161,16 +163,25 @@ public:
   string nom() const override { return "bateau pirate"; }
 
   virtual void attaque(Navire &autre) override {
+    if (etat_ == Etat::Coule) { return; }
     cout << "A l'abordage !" << endl;
     autre.est_touche();
   }
   virtual void replique(Navire &autre) override {
+    if (etat_ == Etat::Coule) { return; }
     cout << "Non mais, ils nous attaquent ! On riposte !!" << endl;
     attaque(autre);
   }
   virtual void est_touche() override {
     if (etat_ == Etat::Coule) { return; }
     etat_ = static_cast<Etat>(etat_ + 1);
+
+    // switch (etat_) {
+    // case Etat::Endommage: etat_ = Etat::Coule; break;
+    // case Etat::Intact: etat_ = Etat::Endommage; break;
+    // default: etat_ = Etat::Coule;
+    // }
+
   }
 };
 
@@ -181,7 +192,7 @@ public:
   string nom() const override { return "navire marchand"; }
 
   virtual void attaque(Navire &autre) override {
-    cout << " On vous aura ! (insultes) " << endl;
+    cout << "On vous aura ! (insultes)" << endl;
   }
   virtual void replique(Navire &autre) override {
     if (etat_ == Etat::Coule) {
